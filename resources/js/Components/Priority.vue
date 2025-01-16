@@ -8,11 +8,11 @@ const props = defineProps({
 
 const backgroundClass = computed(() => {
     const levelColors = {
-        1: "bg-red-500",
-        2: "bg-orange-500",
+        5: "bg-red-500",
+        4: "bg-orange-500",
         3: "bg-yellow-500",
-        4: "bg-green-500",
-        5: "bg-blue-500",
+        2: "bg-green-500",
+        1: "bg-blue-500",
     };
     return levelColors[props.level] || "bg-gray-500"
 })
