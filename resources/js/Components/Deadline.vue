@@ -12,12 +12,12 @@ const backgroundClass = computed(() => {
     const deadlineDate = new Date(props.deadline)
     const daysDifference = differenceInDays(deadlineDate, today)
 
-    if (isBefore(deadlineDate, today)) {
-        return "bg-red-500"
+    if (daysDifference === 0) {
+        return "bg-orange-500"
     }
 
-    if (daysDifference <= 5) {
-        return "bg-orange-500"
+    if (isBefore(deadlineDate, today)) {
+        return "bg-red-500"
     }
 
     return  "bg-green-500"
