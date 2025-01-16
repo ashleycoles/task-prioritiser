@@ -9,19 +9,14 @@ use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
-    /**
-     * Seed the application's database.
-     */
     public function run(): void
     {
-        // User::factory(10)->create();
-
-        $user = User::factory()->create([
+        User::factory()
+            ->has(Task::factory()->count(5))
+            ->create([
             'name' => 'Test User',
             'email' => 'test@example.com',
             'password' => 'password'
         ]);
-
-        Task::factory()->count(10)->create();
     }
 }
