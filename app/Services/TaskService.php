@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Task;
 use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Collection;
 
 class TaskService
 {
@@ -21,6 +22,8 @@ class TaskService
         // Tasks overdue (deadline) by less than 5 days go after, if multiple they are sorted by priority
         // Followed by tasks due today, again in priority order if there are multiple
         // Then any tasks not overdue are in priority order
+
+        /** @var Collection<int, Task> $tasks */
         $tasks = $user->tasks()->orderBy('priority', 'desc')->get();
 
         $today = Carbon::today();
