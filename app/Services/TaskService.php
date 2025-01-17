@@ -17,8 +17,7 @@ class TaskService
         // Followed by tasks due today, again in priority order if there are multiple
         // Then any tasks not overdue are in priority order
 
-        /** @var \Illuminate\Database\Eloquent\Collection<int, Task> $tasks */
-        $tasks = $user->tasks()->orderBy('priority', 'desc')->get();
+        $tasks = $user->tasks()->orderByPriority()->get(); // @phpstan-ignore-line
 
         $groupedByDeadline = $this->groupTasksByDeadline($tasks);
 

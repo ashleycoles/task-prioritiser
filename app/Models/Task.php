@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -25,6 +26,11 @@ class Task extends Model
         'estimate',
         'deadline',
     ];
+
+    public function scopeOrderByPriority(Builder $query, string $direction = 'desc'): void
+    {
+        $query->orderBy('priority', $direction);
+    }
 
     public function users(): BelongsToMany
     {
