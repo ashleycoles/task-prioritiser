@@ -28,37 +28,26 @@ class TaskService
 
         $today = Carbon::today();
 
-        $overdueByMoreThan5Days = [];
-        $overdueByLessThan5Days = [];
-        $dueToday = [];
-        $notOverdue = [];
-
-        foreach ($tasks as $task) {
+        $taskGroupedByDeadline = $tasks->mapToGroups(function ($task) use ($today) {
             $deadline = Carbon::parse($task->deadline);
             $daysDifference = $today->diffInDays($deadline, false);
 
             if ($daysDifference == 0) {
-                $dueToday[] = $task;
+                return ['dueToday' => $task];
             } elseif ($daysDifference < -5) {
-                $overdueByMoreThan5Days[] = $task;
+                return ['overdueByMoreThan5Days' => $task];
             } elseif ($daysDifference < 0) {
-                $overdueByLessThan5Days[] = $task;
+                return ['overdueByLessThan5Days' => $task];
             } else {
-                $notOverdue[] = $task;
+                return ['notOverdue' => $task];
             }
-        }
+        });
 
-        $this->prioritiseTasks($overdueByMoreThan5Days);
-        $this->prioritiseTasks($overdueByLessThan5Days);
-        $this->prioritiseTasks($dueToday);
-        $this->prioritiseTasks($notOverdue);
-
-        $prioritisedTasks = array_merge(
-            $overdueByMoreThan5Days,
-            $overdueByLessThan5Days,
-            $dueToday,
-            $notOverdue
-        );
+        $prioritisedTasks = $taskGroupedByDeadline->get('overdueByMoreThan5Days')
+            ->concat($taskGroupedByDeadline->get('overdueByLessThan5Days'))
+            ->concat($taskGroupedByDeadline->get('dueToday'))
+            ->concat($taskGroupedByDeadline->get('notOverdue'))
+            ->values();
 
         $availableDailyHours = $user->hours;
         $usedHours = 0;
@@ -76,10 +65,5 @@ class TaskService
         }
 
         return ['today' => $todaysTasks, 'future' => $futureTasks];
-    }
-
-    private function prioritiseTasks(array &$tasks): void
-    {
-        usort($tasks, fn ($a, $b) => $b->priority - $a->priority);
     }
 }
