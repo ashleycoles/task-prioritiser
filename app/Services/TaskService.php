@@ -41,10 +41,10 @@ class TaskService
 
     private function mergeTaskPriorityGroups(Collection $tasks): Collection
     {
-        return $tasks->get(TaskGroup::OVERDUE_BY_MORE_THAN_5_DAYS->name)
-            ->concat($tasks->get(TaskGroup::OVERDUE_BY_LESS_THAN_5_DAYS->name))
-            ->concat($tasks->get(TaskGroup::DUE_TODAY->name))
-            ->concat($tasks->get(TaskGroup::NOT_OVERDUE->name))
+        return $tasks->get(TaskGroup::OVERDUE_BY_MORE_THAN_5_DAYS->name, collect())
+            ->concat($tasks->get(TaskGroup::OVERDUE_BY_LESS_THAN_5_DAYS->name, collect()))
+            ->concat($tasks->get(TaskGroup::DUE_TODAY->name, collect()))
+            ->concat($tasks->get(TaskGroup::NOT_OVERDUE->name, collect()))
             ->values();
     }
 
