@@ -10,7 +10,7 @@ use Illuminate\Support\Collection;
 
 class TaskService
 {
-    public function getPrioritisedTasks(User $user): Collection
+    public function getUsersPrioritisedTasks(User $user): Collection
     {
         $tasks = $user->tasks()->orderByPriority()->get(); // @phpstan-ignore-line
 

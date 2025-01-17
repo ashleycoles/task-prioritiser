@@ -20,7 +20,7 @@ class TaskController extends Controller
     {
         $user = $request->user();
 
-        $tasks = $this->taskService->getPrioritisedTasks($user);
+        $tasks = $this->taskService->getUsersPrioritisedTasks($user);
 
         return Inertia::render('Tasks/Index', [
             'today' => $tasks['today'] ?? [],
