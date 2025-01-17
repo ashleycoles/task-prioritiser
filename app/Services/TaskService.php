@@ -5,11 +5,11 @@ namespace App\Services;
 use App\Models\Task;
 use App\Models\User;
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Collection;
 
 class TaskService
 {
-    public function getPrioritisedTasks(User $user): \Illuminate\Support\Collection
+    public function getPrioritisedTasks(User $user): Collection
     {
         // Default order: Priority
         // Tasks overdue (deadline) by more than 5 days go to the top. If there are multiple, they are sorted by priority
@@ -17,12 +17,21 @@ class TaskService
         // Followed by tasks due today, again in priority order if there are multiple
         // Then any tasks not overdue are in priority order
 
-        /** @var Collection<int, Task> $tasks */
+        /** @var \Illuminate\Database\Eloquent\Collection<int, Task> $tasks */
         $tasks = $user->tasks()->orderBy('priority', 'desc')->get();
 
+        $groupedByDeadline = $this->groupTasksByDeadline($tasks);
+
+        $prioritisedTasks = $this->mergeTaskPriorityGroups($groupedByDeadline);
+
+        return $this->divideTasksByUserAvailability($prioritisedTasks, $user);
+    }
+
+    private function groupTasksByDeadline(Collection $tasks): Collection
+    {
         $today = Carbon::today();
 
-        $taskGroupedByDeadline = $tasks->mapToGroups(function ($task) use ($today) {
+        return $tasks->mapToGroups(function ($task) use ($today) {
             $deadline = Carbon::parse($task->deadline);
             $daysDifference = $today->diffInDays($deadline, false);
 
@@ -32,21 +41,27 @@ class TaskService
                 return ['overdueByMoreThan5Days' => $task];
             } elseif ($daysDifference < 0) {
                 return ['overdueByLessThan5Days' => $task];
-            } else {
-                return ['notOverdue' => $task];
             }
+
+            return ['notOverdue' => $task];
         });
+    }
 
-        $prioritisedTasks = $taskGroupedByDeadline->get('overdueByMoreThan5Days')
-            ->concat($taskGroupedByDeadline->get('overdueByLessThan5Days'))
-            ->concat($taskGroupedByDeadline->get('dueToday'))
-            ->concat($taskGroupedByDeadline->get('notOverdue'))
+    private function mergeTaskPriorityGroups(Collection $tasks): Collection
+    {
+        return $tasks->get('overdueByMoreThan5Days')
+            ->concat($tasks->get('overdueByLessThan5Days'))
+            ->concat($tasks->get('dueToday'))
+            ->concat($tasks->get('notOverdue'))
             ->values();
+    }
 
+    private function divideTasksByUserAvailability(Collection $tasks, User $user): Collection
+    {
         $availableDailyHours = $user->hours;
         $usedHours = 0;
 
-        return $prioritisedTasks->mapToGroups(function ($task) use ($availableDailyHours, &$usedHours) {
+        return $tasks->mapToGroups(function ($task) use ($availableDailyHours, &$usedHours) {
             if ($task->estimate + $usedHours <= $availableDailyHours) {
                 $usedHours += $task->estimate;
                 return ['today' => $task];
