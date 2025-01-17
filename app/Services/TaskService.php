@@ -56,8 +56,10 @@ class TaskService
         return $tasks->mapToGroups(function (Task $task) use ($availableDailyHours, &$usedHours) {
             if ($task->estimate + $usedHours <= $availableDailyHours) {
                 $usedHours += $task->estimate;
+
                 return ['today' => $task];
             }
+
             return ['future' => $task];
         });
     }

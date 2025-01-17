@@ -8,6 +8,7 @@ enum TaskGroup
     case OVERDUE_BY_MORE_THAN_5_DAYS;
     case OVERDUE_BY_LESS_THAN_5_DAYS;
     case NOT_OVERDUE;
+
     public static function getGroupByDaysDifference(float $daysDifference): TaskGroup
     {
         return match (true) {
