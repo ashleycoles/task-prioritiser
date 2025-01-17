@@ -50,10 +50,20 @@ class TaskService
             $notOverdue
         );
 
-        // TODO: Only return the highest priority tasks that don't exceed the hours the user works in a day
         $availableDailyHours = $user->hours;
+        $usedHours = 0;
 
-        return $prioritisedTasks;
+        $daysTasks = [];
+
+        foreach ($prioritisedTasks as $task) {
+            if ($task->estimate + $usedHours <= $availableDailyHours) {
+                $daysTasks[] = $task;
+                $usedHours += $task->estimate;
+            }
+        }
+
+
+        return $daysTasks;
     }
 
     private function prioritiseTasks(array &$tasks): void
