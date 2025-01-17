@@ -9,13 +9,7 @@ use Illuminate\Database\Eloquent\Collection;
 
 class TaskService
 {
-    /**
-     * @return array{
-     *     today: Task[],
-     *     future: Task[]
-     * }
-     */
-    public function getPrioritisedTasks(User $user): array
+    public function getPrioritisedTasks(User $user): \Illuminate\Support\Collection
     {
         // Default order: Priority
         // Tasks overdue (deadline) by more than 5 days go to the top. If there are multiple, they are sorted by priority
@@ -52,18 +46,12 @@ class TaskService
         $availableDailyHours = $user->hours;
         $usedHours = 0;
 
-        $todaysTasks = [];
-        $futureTasks = [];
-
-        foreach ($prioritisedTasks as $task) {
+        return $prioritisedTasks->mapToGroups(function ($task) use ($availableDailyHours, &$usedHours) {
             if ($task->estimate + $usedHours <= $availableDailyHours) {
-                $todaysTasks[] = $task;
                 $usedHours += $task->estimate;
-            } else {
-                $futureTasks[] = $task;
+                return ['today' => $task];
             }
-        }
-
-        return ['today' => $todaysTasks, 'future' => $futureTasks];
+            return ['future' => $task];
+        });
     }
 }
