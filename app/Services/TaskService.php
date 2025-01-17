@@ -2,12 +2,19 @@
 
 namespace App\Services;
 
+use App\Models\Task;
 use App\Models\User;
 use Carbon\Carbon;
 
 class TaskService
 {
-    public function getPrioritisedTasks(User $user)
+    /**
+     * @return array{
+     *     today: Task[],
+     *     future: Task[]
+     * }
+     */
+    public function getPrioritisedTasks(User $user): array
     {
         // Default order: Priority
         // Tasks overdue (deadline) by more than 5 days go to the top. If there are multiple, they are sorted by priority
@@ -53,17 +60,20 @@ class TaskService
         $availableDailyHours = $user->hours;
         $usedHours = 0;
 
-        $daysTasks = [];
+        $todaysTasks = [];
+        $futureTasks = [];
 
         foreach ($prioritisedTasks as $task) {
             if ($task->estimate + $usedHours <= $availableDailyHours) {
-                $daysTasks[] = $task;
+                $todaysTasks[] = $task;
                 $usedHours += $task->estimate;
+            } else {
+                $futureTasks[] = $task;
             }
         }
 
 
-        return $daysTasks;
+        return ['today' => $todaysTasks, 'future' => $futureTasks];
     }
 
     private function prioritiseTasks(array &$tasks): void
