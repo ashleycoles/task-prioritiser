@@ -75,12 +75,11 @@ class TaskService
             }
         }
 
-
         return ['today' => $todaysTasks, 'future' => $futureTasks];
     }
 
     private function prioritiseTasks(array &$tasks): void
     {
-        usort($tasks, fn($a, $b) => $b->priority - $a->priority);
+        usort($tasks, fn ($a, $b) => $b->priority - $a->priority);
     }
 }

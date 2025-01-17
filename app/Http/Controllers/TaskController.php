@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Task;
 use App\Services\TaskService;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -25,7 +24,7 @@ class TaskController extends Controller
 
         return Inertia::render('Tasks/Index', [
             'today' => $tasks['today'],
-            'future' => $tasks['future']
+            'future' => $tasks['future'],
         ]);
     }
 }

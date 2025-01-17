@@ -23,7 +23,7 @@ class Task extends Model
         'title',
         'description',
         'estimate',
-        'deadline'
+        'deadline',
     ];
 
     public function users(): BelongsToMany

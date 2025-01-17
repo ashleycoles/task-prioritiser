@@ -21,7 +21,7 @@ class TaskFactory extends Factory
             'description' => $this->faker->paragraph(),
             'estimate' => $this->faker->randomFloat(2, 0.25, 8),
             'deadline' => $this->faker->dateTimeBetween('now', '+1 year'),
-            'priority' => rand(1, 5)
+            'priority' => rand(1, 5),
         ];
     }
 }
