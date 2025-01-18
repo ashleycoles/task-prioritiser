@@ -2,12 +2,12 @@
 
 namespace App\Enums;
 
-enum TaskGroup
+enum TaskGroup: int
 {
-    case DUE_TODAY;
-    case OVERDUE_BY_MORE_THAN_5_DAYS;
-    case OVERDUE_BY_LESS_THAN_5_DAYS;
-    case NOT_OVERDUE;
+    case OVERDUE_BY_MORE_THAN_5_DAYS = 0;
+    case OVERDUE_BY_LESS_THAN_5_DAYS = 1;
+    case DUE_TODAY = 2;
+    case NOT_OVERDUE = 3;
 
     public static function getGroupByDaysDifference(float $daysDifference): TaskGroup
     {

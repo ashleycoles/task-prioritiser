@@ -16,9 +16,7 @@ class TaskService
 
         $groupedByDeadline = $this->groupTasksByDeadline($tasks);
 
-        $prioritisedTasks = $this->mergeTaskPriorityGroups($groupedByDeadline);
-
-        return $this->divideTasksByUserAvailability($prioritisedTasks, $user);
+        return $this->divideTasksByUserAvailability($groupedByDeadline, $user);
     }
 
     private function groupTasksByDeadline(Collection $tasks): Collection
@@ -35,17 +33,10 @@ class TaskService
             $deadline = Carbon::parse($task->deadline);
             $daysDifference = $today->diffInDays($deadline);
 
-            return [TaskGroup::getGroupByDaysDifference($daysDifference)->name => $task];
-        });
-    }
-
-    private function mergeTaskPriorityGroups(Collection $tasks): Collection
-    {
-        return $tasks->get(TaskGroup::OVERDUE_BY_MORE_THAN_5_DAYS->name, collect())
-            ->concat($tasks->get(TaskGroup::OVERDUE_BY_LESS_THAN_5_DAYS->name, collect()))
-            ->concat($tasks->get(TaskGroup::DUE_TODAY->name, collect()))
-            ->concat($tasks->get(TaskGroup::NOT_OVERDUE->name, collect()))
-            ->values();
+            return [TaskGroup::getGroupByDaysDifference($daysDifference)->value => $task];
+        })
+            ->sortKeys()
+            ->flatten();
     }
 
     private function divideTasksByUserAvailability(Collection $tasks, User $user): Collection
