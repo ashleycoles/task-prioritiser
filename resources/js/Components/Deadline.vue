@@ -1,18 +1,17 @@
 <script setup>
 
 import {computed} from "vue"
-import {differenceInDays, isBefore, parseISO, format, subDays} from "date-fns"
+import {differenceInDays, isBefore, parseISO, format, subDays, isSameDay, startOfDay} from "date-fns"
 
 const {deadline} = defineProps({
     deadline: String
 })
 
 const backgroundClass = computed(() => {
-    const today = new Date()
-    const deadlineDate = new Date(deadline)
-    const daysDifference = differenceInDays(deadlineDate, today)
+    const today = startOfDay(new Date())
+    const deadlineDate = startOfDay(parseISO(deadline))
 
-    if (daysDifference === 0) {
+    if (isSameDay(deadlineDate, today)) {
         return "bg-yellow-500"
     }
 
