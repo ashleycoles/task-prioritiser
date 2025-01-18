@@ -25,6 +25,7 @@ class Task extends Model
         'description',
         'estimate',
         'deadline',
+        'priority',
     ];
 
     public function scopeOrderByPriority(Builder $query, string $direction = 'desc'): void

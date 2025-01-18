@@ -46,6 +46,13 @@ const showingNavigationDropdown = ref(false);
                                 >
                                     View Tasks
                                 </NavLink>
+
+                                <NavLink
+                                    :href="route('tasks.create')"
+                                    :active="route().current('tasks.create')"
+                                >
+                                    Add Task
+                                </NavLink>
                             </div>
                         </div>
 
