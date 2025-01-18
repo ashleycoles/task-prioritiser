@@ -33,59 +33,57 @@ function submit() {
             <H2>Create a New Task</H2>
         </template>
 
-        <div class="py-12">
-            <div class="mx-auto max-w-4xl sm:px-6 lg:px-8">
-                <div class="overflow-hidden bg-white shadow-sm sm:rounded-lg">
-                    <div class="p-6 text-gray-900">
-                        <form @submit.prevent="submit" class="flex flex-col gap-6">
+        <div class="mx-auto max-w-4xl sm:px-6 lg:px-8">
+            <div class="overflow-hidden bg-white shadow-sm sm:rounded-lg">
+                <div class="p-6 text-gray-900">
+                    <form @submit.prevent="submit" class="flex flex-col gap-6">
+                        <FormGroup>
+                            <InputLabel>
+                                Title
+                                <input class="w-full" type="text" v-model="form.title" required />
+                            </InputLabel>
+                            <InputError :message="errors.title" />
+                        </FormGroup>
+
+                        <FormGroup>
+                            <InputLabel>
+                                Description
+                                <textarea class="w-full" v-model="form.description" required></textarea>
+                            </InputLabel>
+                            <Error v-if="errors.description">{{ errors.description }}</Error>
+                        </FormGroup>
+
+                        <div class="flex justify-between gap-2">
                             <FormGroup>
                                 <InputLabel>
-                                    Title
-                                    <input class="w-full" type="text" v-model="form.title" required />
+                                    Priority
+                                    <input type="number" class="w-full" v-model="form.priority" min="1" max="5" required />
                                 </InputLabel>
-                                <InputError :message="errors.title" />
+                                <InputError :message="errors.priority" />
                             </FormGroup>
 
                             <FormGroup>
                                 <InputLabel>
-                                    Description
-                                    <textarea class="w-full" v-model="form.description" required></textarea>
+                                    Deadline
+                                    <input type="date" class="w-full" v-model="form.deadline" required />
                                 </InputLabel>
-                                <Error v-if="errors.description">{{ errors.description }}</Error>
+                                <InputError :message="errors.deadline" />
                             </FormGroup>
 
-                            <div class="flex justify-between gap-2">
-                                <FormGroup>
-                                    <InputLabel>
-                                        Priority
-                                        <input type="number" class="w-full" v-model="form.priority" min="1" max="5" required />
-                                    </InputLabel>
-                                    <InputError :message="errors.priority" />
-                                </FormGroup>
+                            <FormGroup>
+                                <InputLabel>
+                                    Estimate
+                                    <input type="number" class="w-full" v-model="form.estimate" min="0.0" max="8.0" step="0.25" required />
+                                </InputLabel>
+                                <InputError :message="errors.estimate" />
+                            </FormGroup>
+                        </div>
 
-                                <FormGroup>
-                                    <InputLabel>
-                                        Deadline
-                                        <input type="date" class="w-full" v-model="form.deadline" required />
-                                    </InputLabel>
-                                    <InputError :message="errors.deadline" />
-                                </FormGroup>
+                        <div class="text-center">
+                            <PrimaryButton>Create Task</PrimaryButton>
+                        </div>
+                    </form>
 
-                                <FormGroup>
-                                    <InputLabel>
-                                        Estimate
-                                        <input type="number" class="w-full" v-model="form.estimate" min="0.0" max="8.0" step="0.25" required />
-                                    </InputLabel>
-                                    <InputError :message="errors.estimate" />
-                                </FormGroup>
-                            </div>
-
-                            <div class="text-center">
-                                <PrimaryButton>Create Task</PrimaryButton>
-                            </div>
-                        </form>
-
-                    </div>
                 </div>
             </div>
         </div>
