@@ -50,7 +50,7 @@ function submit() {
                                 Description
                                 <textarea class="w-full" v-model="form.description" required></textarea>
                             </InputLabel>
-                            <Error v-if="errors.description">{{ errors.description }}</Error>
+                            <InputError :message="errors.description" />
                         </FormGroup>
 
                         <div class="flex justify-between gap-2">
