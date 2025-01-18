@@ -1,8 +1,8 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head } from '@inertiajs/vue3';
-import Priority from "@/Components/Priority.vue";
-import Deadline from "@/Components/Deadline.vue";
+import Priority from "@/Components/Tasks/Priority.vue";
+import Deadline from "@/Components/Tasks/Deadline.vue";
 import H2 from "@/Components/H2.vue";
 
 defineProps({

@@ -3,6 +3,10 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import {Head, router} from '@inertiajs/vue3';
 import {reactive} from "vue";
 import H2 from "@/Components/H2.vue";
+import InputLabel from "@/Components/Forms/InputLabel.vue";
+import PrimaryButton from "@/Components/PrimaryButton.vue";
+import FormGroup from "@/Components/Forms/FormGroup.vue";
+import InputError from "@/Components/Forms/InputError.vue";
 
 defineProps({
     errors: Object
@@ -30,48 +34,54 @@ function submit() {
         </template>
 
         <div class="py-12">
-            <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
-                <div
-                    class="overflow-hidden bg-white shadow-sm sm:rounded-lg"
-                >
+            <div class="mx-auto max-w-4xl sm:px-6 lg:px-8">
+                <div class="overflow-hidden bg-white shadow-sm sm:rounded-lg">
                     <div class="p-6 text-gray-900">
-                        <form @submit.prevent="submit">
-                            <div>
-                                <label for="title">Title</label>
-                                <input type="text" id="title" v-model="form.title" required />
-                                <div v-if="errors.title">{{ errors.title }}</div>
+                        <form @submit.prevent="submit" class="flex flex-col gap-6">
+                            <FormGroup>
+                                <InputLabel>
+                                    Title
+                                    <input class="w-full" type="text" v-model="form.title" required />
+                                </InputLabel>
+                                <InputError :message="errors.title" />
+                            </FormGroup>
+
+                            <FormGroup>
+                                <InputLabel>
+                                    Description
+                                    <textarea class="w-full" v-model="form.description" required></textarea>
+                                </InputLabel>
+                                <Error v-if="errors.description">{{ errors.description }}</Error>
+                            </FormGroup>
+
+                            <div class="flex justify-between gap-2">
+                                <FormGroup>
+                                    <InputLabel>
+                                        Priority
+                                        <input type="number" class="w-full" v-model="form.priority" min="1" max="5" required />
+                                    </InputLabel>
+                                    <InputError :message="errors.priority" />
+                                </FormGroup>
+
+                                <FormGroup>
+                                    <InputLabel>
+                                        Deadline
+                                        <input type="date" class="w-full" v-model="form.deadline" required />
+                                    </InputLabel>
+                                    <InputError :message="errors.deadline" />
+                                </FormGroup>
+
+                                <FormGroup>
+                                    <InputLabel>
+                                        Estimate
+                                        <input type="number" class="w-full" v-model="form.estimate" min="0.0" max="8.0" step="0.25" required />
+                                    </InputLabel>
+                                    <InputError :message="errors.estimate" />
+                                </FormGroup>
                             </div>
 
-
-                            <div>
-                                <label for="description">Description</label>
-                                <textarea id="description" v-model="form.description" required></textarea>
-                                <div v-if="errors.description">{{ errors.description }}</div>
-
-                            </div>
-
-                            <div>
-                                <label for="deadline">Deadline</label>
-                                <input type="date" id="deadline" v-model="form.deadline" required />
-                                <div v-if="errors.deadline">{{ errors.deadline }}</div>
-
-                            </div>
-
-                            <div>
-                                <label for="priority">Priority</label>
-                                <input type="number" id="priority" v-model="form.priority" min="1" max="5" required />
-                                <div v-if="errors.priority">{{ errors.priority }}</div>
-
-                            </div>
-
-                            <div>
-                                <label for="estimate">Estimate</label>
-                                <input type="number" id="estimate" v-model="form.estimate" min="0.0" max="8.0" step="0.25" required />
-                                <div v-if="errors.estimate">{{ errors.estimate }}</div>
-                            </div>
-
-                            <div>
-                                <input type="submit" value="Save" />
+                            <div class="text-center">
+                                <PrimaryButton>Create Task</PrimaryButton>
                             </div>
                         </form>
 
