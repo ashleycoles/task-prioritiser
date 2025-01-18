@@ -20,7 +20,7 @@ class TaskCreateRequest extends FormRequest
             'description' => 'required|string|max:255',
             'deadline' => 'required|date_format:Y-m-d',
             'priority' => 'required|integer|min:1|max:5',
-            'estimate' => 'required|min:0|max:8',
+            'estimate' => 'required|numeric|min:0|max:8',
         ];
     }
 }
