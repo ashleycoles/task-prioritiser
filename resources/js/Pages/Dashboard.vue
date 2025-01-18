@@ -1,6 +1,7 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head } from '@inertiajs/vue3';
+import H1 from "@/Components/Text/H1.vue";
 </script>
 
 <template>
@@ -8,11 +9,7 @@ import { Head } from '@inertiajs/vue3';
 
     <AuthenticatedLayout>
         <template #header>
-            <h2
-                class="text-xl font-semibold leading-tight text-gray-800"
-            >
-                Dashboard
-            </h2>
+            <H1>Dashboard</H1>
         </template>
 
         <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">

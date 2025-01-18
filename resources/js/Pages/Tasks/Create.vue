@@ -2,9 +2,9 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import {Head, router} from '@inertiajs/vue3';
 import {reactive} from "vue";
-import H2 from "@/Components/H2.vue";
+import H1 from "@/Components/Text/H1.vue";
 import InputLabel from "@/Components/Forms/InputLabel.vue";
-import PrimaryButton from "@/Components/PrimaryButton.vue";
+import PrimaryButton from "@/Components/Buttons/PrimaryButton.vue";
 import FormGroup from "@/Components/Forms/FormGroup.vue";
 import InputError from "@/Components/Forms/InputError.vue";
 
@@ -30,7 +30,7 @@ function submit() {
 
     <AuthenticatedLayout>
         <template #header>
-            <H2>Create a New Task</H2>
+            <H1>Create a New Task</H1>
         </template>
 
         <div class="mx-auto max-w-4xl sm:px-6 lg:px-8">
