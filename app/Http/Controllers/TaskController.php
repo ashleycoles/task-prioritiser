@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\TaskCreateRequest;
-use App\Models\Task;
 use App\Services\TaskService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -41,9 +40,11 @@ class TaskController extends Controller
     {
         try {
             $this->taskService->createTask($request->validated(), $request->user());
+
             return redirect(route('tasks.index'));
         } catch (\Exception $e) {
-            Log::error('Task creation failed: ' . $e->getMessage());
+            Log::error('Task creation failed: '.$e->getMessage());
+
             return redirect()->back()->with('error', 'Failed to create task. Try again later.');
         }
     }

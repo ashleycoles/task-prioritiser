@@ -2,7 +2,6 @@
 
 namespace Tests\Unit\Services;
 
-
 use App\Models\Task;
 use App\Models\User;
 use App\Services\TaskService;
@@ -14,10 +13,9 @@ use Tests\TestCase;
 
 class TaskServiceTest extends TestCase
 {
-
     private User $userMock;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -45,9 +43,9 @@ class TaskServiceTest extends TestCase
         $this->userMock = $userMock;
     }
 
-    public function test_getUsersPrioritisedTasks_correctGrouping(): void
+    public function test_get_users_prioritised_tasks_correct_grouping(): void
     {
-        $taskService = new TaskService();
+        $taskService = new TaskService;
 
         $case = $taskService->getUsersPrioritisedTasks($this->userMock);
 
@@ -59,9 +57,9 @@ class TaskServiceTest extends TestCase
         $this->assertCount(3, $case['future']);
     }
 
-    public function test_getUsersPrioritisedTasks_correctSorting(): void
+    public function test_get_users_prioritised_tasks_correct_sorting(): void
     {
-        $taskService = new TaskService();
+        $taskService = new TaskService;
 
         $case = $taskService->getUsersPrioritisedTasks($this->userMock);
 
