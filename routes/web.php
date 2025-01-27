@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TaskController;
+use App\Http\Middleware\SanitiseRequest;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -16,7 +17,9 @@ Route::middleware('auth')->group(function () {
 
     Route::controller(TaskController::class)->group(function () {
         Route::get('/tasks', 'index')->name('tasks.index');
-        Route::get('/tasks/create', 'create')->name('tasks.create');
+        Route::get('/tasks/create', 'create')
+            ->middleware(SanitiseRequest::class)
+            ->name('tasks.create');
         Route::post('/tasks', 'store')->name('tasks.store');
     });
 });

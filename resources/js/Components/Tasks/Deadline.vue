@@ -1,7 +1,7 @@
 <script setup>
 
 import {computed} from "vue"
-import {differenceInDays, isBefore, parseISO, format, subDays, isSameDay, startOfDay} from "date-fns"
+import {isBefore, parseISO, format, subDays, isSameDay, startOfDay} from "date-fns"
 
 const {deadline} = defineProps({
     deadline: String
