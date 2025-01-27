@@ -7,6 +7,7 @@ use App\Models\Task;
 use App\Services\TaskService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -38,16 +39,12 @@ class TaskController extends Controller
 
     public function store(TaskCreateRequest $request): RedirectResponse
     {
-        $task = Task::create([
-            'title' => $request->title,
-            'description' => $request->description,
-            'estimate' => $request->estimate,
-            'deadline' => $request->deadline,
-            'priority' => $request->priority,
-        ]);
-
-        $task->users()->attach($request->user());
-
-        return redirect(route('tasks.index'));
+        try {
+            $this->taskService->createTask($request->validated(), $request->user());
+            return redirect(route('tasks.index'));
+        } catch (\Exception $e) {
+            Log::error('Task creation failed: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Failed to create task. Try again later.');
+        }
     }
 }
